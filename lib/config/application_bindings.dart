@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/config/environment.dart';
 import 'package:wc_2026_mobile/data/repositories/auth/auth_repository.dart';
 import 'package:wc_2026_mobile/data/repositories/auth/auth_repository_remote.dart';
 import 'package:wc_2026_mobile/data/services/api/auth_api.dart';
+import 'package:wc_2026_mobile/routing/router.dart';
 
 class const ApplicationBindings({
   super.key,
@@ -14,6 +16,9 @@ class const ApplicationBindings({
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<GoRouter>(
+          create: (context) => router(),
+        ),
         Provider(
           create: (context) => Dio(
             BaseOptions(

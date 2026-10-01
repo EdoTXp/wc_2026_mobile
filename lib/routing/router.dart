@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/routing/routes.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_bindings.dart';
 import 'package:wc_2026_mobile/ui/auth/login/login_screen.dart';
+import 'package:wc_2026_mobile/ui/auth/register/register_screen.dart';
 import 'package:wc_2026_mobile/ui/home/home_screen.dart';
 import 'package:wc_2026_mobile/ui/splash/splash_screen.dart';
 import 'package:wc_2026_mobile/ui/welcome/welcome_screen.dart';
@@ -27,6 +28,10 @@ GoRouter router() => GoRouter(
           );
         },
       ),
+    ),
+    GoRoute(
+      path: Routes.authRegister,
+      builder: (context, state) => RegisterScreen(),
     ),
     GoRoute(
       path: '/home',
