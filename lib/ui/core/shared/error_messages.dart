@@ -21,6 +21,7 @@ final class ErrorMessages._() {
     EmailAlreadyInUseException() =>
       'Este e-mail já tem conta. Entre com ele ou use outro.',
 
+    StorageException() ||
     UnknowExecption() => 'Algo deu errado. Tente novamente.',
   };
 }

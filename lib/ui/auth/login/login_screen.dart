@@ -57,13 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
-
-    if (command.result is Ok) {
-      context.go(
-        '/home',
-        extra: widget.viewModel.name,
-      );
-    }
   }
 
   @override

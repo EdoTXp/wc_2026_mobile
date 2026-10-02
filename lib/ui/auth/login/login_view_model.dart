@@ -1,30 +1,31 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/core/command.dart';
 import 'package:wc_2026_mobile/core/logging/app_logger.dart';
 import 'package:wc_2026_mobile/core/result.dart';
-import 'package:wc_2026_mobile/data/repositories/auth/auth_repository.dart';
 import 'package:wc_2026_mobile/domain/auth_session.dart';
+import 'package:wc_2026_mobile/domain/use_cases/auth/auth_login_user_case.dart';
 
 class LoginViewModel({
-  required final AuthRepository _authRepository,
+  required final AuthLoginUserCase _loginUserCase,
+  required final AuthSessionNotifier _sessionNotifier,
 }) extends ChangeNotifier {
   final _log = AppLogger('loginViewModel');
   late final login = Command1<void, (String, String)>(_login);
-  String name = '';
 
   Future<Result<void>> _login((String, String) credentials) async {
     final (email, password) = credentials;
 
-    final result = await _authRepository.login(
+    final result = await _loginUserCase.execute(
       email: email,
       password: password,
     );
 
     switch (result) {
-      case Ok<AuthSession>(:final value):
-        name = value.user.name;
+      case Ok<AuthSessionUser>(:final value):
+        _sessionNotifier.signedIn(value);
         return Result.done;
-      case Error<AuthSession>(:final error):
+      case Error<AuthSessionUser>(:final error):
         _log.error(
           'Failed to login',
           error: error,

@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
 import 'package:wc_2026_mobile/routing/routes.dart';
 import 'package:wc_2026_mobile/ui/core/shared/app_assets.dart';
 import 'package:wc_2026_mobile/ui/core/shared/licensed_badge.dart';
@@ -8,7 +9,10 @@ import 'package:wc_2026_mobile/ui/core/shared/logo_card.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 import 'package:wc_2026_mobile/ui/splash/widgets/boot_bar.dart';
 
-class const SplashScreen({super.key}) extends StatefulWidget {
+class const SplashScreen({
+  super.key,
+  required final AuthSessionNotifier _sessionNotifier,
+}) extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -23,17 +27,22 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    widget._sessionNotifier.addListener(_exitWhenReady);
     _boot.forward().then((_) => _exitWhenReady());
   }
 
   void _exitWhenReady() {
-    if (!mounted || !_boot.isCompleted) return;
+    if (!mounted || !_boot.isCompleted || !widget._sessionNotifier.isRestored) {
+      return;
+    }
+    widget._sessionNotifier.removeListener(_exitWhenReady);
 
     context.go(Routes.welcome);
   }
 
   @override
   void dispose() {
+    widget._sessionNotifier.removeListener(_exitWhenReady);
     _boot.dispose();
     super.dispose();
   }
