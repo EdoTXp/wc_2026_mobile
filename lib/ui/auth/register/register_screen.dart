@@ -1,11 +1,16 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:wc_2026_mobile/domain/models/team/team.dart';
+import 'package:wc_2026_mobile/core/result.dart';
+import 'package:wc_2026_mobile/ui/auth/register/register_view_model.dart';
 import 'package:wc_2026_mobile/ui/auth/register/widgets/header.dart';
 import 'package:wc_2026_mobile/ui/auth/register/widgets/register_form.dart';
 import 'package:wc_2026_mobile/ui/auth/register/widgets/team_picker.dart';
+import 'package:wc_2026_mobile/ui/core/shared/error_messages.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
-class const RegisterScreen({super.key}) extends StatefulWidget {
+class const RegisterScreen({
+  super.key,
+  required final RegisterViewModel viewModel,
+}) extends StatefulWidget {
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -18,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _search = TextEditingController();
 
   var _acceptedTerms = false;
+  final _favorites = <String>{};
 
   @override
   void dispose() {
@@ -47,26 +53,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   nameController: _name,
                   emailController: _email,
                   passwordController: _password,
-                  teamPicker: TeamPicker(
-                    teams: [
-                      Team(
-                        code: 'BRA',
-                        name: 'Brasil',
-                        flagUrl: '/flags/bra.png',
-                        primaryColor: 0xFFFFDF80,
-                      ),
-                      Team(
-                        code: 'CAN',
-                        name: 'Canada',
-                        flagUrl: '/flags/can.png',
-                        primaryColor: 0xFFD52B1E,
-                      ),
-                    ],
-                    available: 48,
-                    selected: {},
-                    onToggled: (_) {},
-                    //errorMessage: 'Erro ao buscar times',
-                    // loading: true,
+                  teamPicker: ListenableBuilder(
+                    listenable: Listenable.merge([
+                      widget.viewModel.loadTeams,
+                      _search,
+                    ]),
+                    builder: (context, _) {
+                      final teams = widget.viewModel.teams;
+                      final loadTeams = widget.viewModel.loadTeams;
+
+                      return TeamPicker(
+                        teams: widget.viewModel.teamMatching(_search.text),
+                        available: teams.length,
+                        selected: _favorites,
+                        searchController: _search,
+                        loading: loadTeams.running,
+                        errorMessage: switch (loadTeams.result) {
+                          Error(:final error) => ErrorMessages.of(error),
+                          _ => null,
+                        },
+                        onRetry: loadTeams.execute,
+                        onToggled: (code) {
+                          setState(() {
+                            if (!_favorites.remove(code)) {
+                              _favorites.add(code);
+                            }
+                          });
+                        },
+                      );
+                    },
                   ),
                   acceptedTerms: _acceptedTerms,
                   onAcceptedTermChanged: (value) {
