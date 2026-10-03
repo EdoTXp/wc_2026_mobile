@@ -3,7 +3,7 @@ import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 import 'package:wc_2026_mobile/ui/home/home_view_model.dart';
 import 'package:wc_2026_mobile/ui/home/widgets/sticker_card.dart';
 
-class const RecentSticker({
+class const RecentStickers({
   super.key,
   required final List<RecentStickerView> stickers,
   required final ValueChanged<RecentStickerView> onStickerTap,
@@ -18,7 +18,7 @@ class const RecentSticker({
               scrollDirection: .horizontal,
               padding: .only(left: AppDimens.gridMargin),
               itemBuilder: (context, index) {
-                final sticker = stickers.first;
+                final sticker = stickers[index];
 
                 return StickerCard(
                   number: sticker.number,
@@ -34,7 +34,7 @@ class const RecentSticker({
                   width: 12,
                 );
               },
-              itemCount: 10,
+              itemCount: stickers.length,
             ),
     );
   }

@@ -9,6 +9,8 @@ class const RepeatedStrip({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final repeatedText = count != 1 ? 'REPETIDAS' : 'REPETIDA';
+
     return Material(
       child: ListTile(
         onTap: onTap,
@@ -30,7 +32,7 @@ class const RepeatedStrip({
           size: 18,
           color: AppColors.yellow,
         ),
-        title: Text('$count REPETIDAS'),
+        title: Text('$count $repeatedText'),
         titleTextStyle: AppTextStyles.subhead.copyWith(
           color: AppColors.white,
         ),

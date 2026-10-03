@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:provider/provider.dart';
 import 'package:wc_2026_mobile/core/auth/auth_session_notifier.dart';
+import 'package:wc_2026_mobile/ui/core/shared/command_builder.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 import 'package:wc_2026_mobile/ui/home/home_view_model.dart';
 import 'package:wc_2026_mobile/ui/home/widgets/action_card.dart';
@@ -11,12 +11,11 @@ import 'package:wc_2026_mobile/ui/home/widgets/repeated_strip.dart';
 
 class const HomeScreen({
   super.key,
-  required final String name,
+  required final HomeViewModel _viewModel,
+  required final AuthSessionNotifier _session,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final session = context.read<AuthSessionNotifier>();
-
     return Scaffold(
       appBar: Header(),
       body: RefreshIndicator(
@@ -32,7 +31,7 @@ class const HomeScreen({
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  _Progress(),
+                  _Progress(viewModel: _viewModel),
                   const SizedBox(
                     height: 24,
                   ),
@@ -75,6 +74,7 @@ class const HomeScreen({
               height: 16,
             ),
             _Recent(
+              viewModel: _viewModel,
               onStickerTap: (value) {},
             ),
             const SizedBox(
@@ -83,6 +83,7 @@ class const HomeScreen({
             Padding(
               padding: const .symmetric(horizontal: AppDimens.gridMargin),
               child: _Repeated(
+                viewModel: _viewModel,
                 onTap: () => {},
               ),
             ),
@@ -94,42 +95,61 @@ class const HomeScreen({
 }
 
 class const _Recent({
+  required final HomeViewModel viewModel,
   required final ValueChanged<RecentStickerView> onStickerTap,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RecentSticker(
-      stickers: [
-        (
-          code: 'BRA',
-          number: 1,
-          flagCode: 'BRA',
-          label: 'BRA',
-          teamColor: Color(0xFFFFDF00),
-          teamName: 'Brazil',
-          count: 1,
-        ),
-      ],
-      onStickerTap: onStickerTap,
+    return CommandBuilder<List<RecentStickerView>>(
+      asyncCommand: viewModel.loadRecent,
+      data: () => viewModel.recentStickers,
+      loading: (context, loaderWidget) => SizedBox(
+        height: 138,
+        child: loaderWidget,
+      ),
+      retry: () => viewModel.loadRecent.execute(),
+      builder: (stickers) => RecentStickers(
+        stickers: stickers,
+        onStickerTap: onStickerTap,
+      ),
     );
   }
 }
 
-class const _Progress() extends StatelessWidget {
+class const _Progress({required final HomeViewModel viewModel})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AlbumHero();
+    return CommandBuilder(
+      asyncCommand: viewModel.loadSummary,
+      data: () => viewModel.progress,
+      retry: () => viewModel.loadSummary.execute(),
+      builder: (result) => AlbumHero(
+        collected: result.collected,
+        total: result.total,
+      ),
+    );
   }
 }
 
 class const _Repeated({
+  required final HomeViewModel _viewModel,
   required final VoidCallback onTap,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RepeatedStrip(
-      count: 10,
-      onTap: () {},
+    return ListenableBuilder(
+      listenable: _viewModel.loadSummary,
+      builder: (context, _) {
+        if (_viewModel.progress case final progress?) {
+          return RepeatedStrip(
+            count: progress.repeated,
+            onTap: onTap,
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 }
