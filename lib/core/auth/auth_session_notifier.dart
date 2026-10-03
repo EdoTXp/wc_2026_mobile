@@ -17,7 +17,7 @@ class AuthSessionNotifier({
   var _restored = false;
 
   bool get isRestored => _restored;
-  AuthSessionUser? get usr => _user;
+  AuthSessionUser? get user => _user;
   bool get isSignedIn => _user != null;
 
   this {
@@ -39,6 +39,16 @@ class AuthSessionNotifier({
 
     _restored = true;
     notifyListeners();
+  }
+
+  String get initials {
+    final name = _user?.name.trim() ?? '';
+
+    if (name.isEmpty) return '';
+
+    final words = name.split(RegExp(r'\s+'));
+    final first = words.first[0];
+    return (words.length == 1 ? first : first + words.last[0]).toUpperCase();
   }
 
   void signedIn(AuthSessionUser user) {
