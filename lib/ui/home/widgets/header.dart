@@ -2,9 +2,11 @@ import 'package:material_ui/material_ui.dart';
 import 'package:wc_2026_mobile/ui/core/shared/initials_avatar.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
 
-class const Header({super.key})
-    extends StatelessWidget
-    implements PreferredSizeWidget {
+class const Header({
+  super.key,
+  required final String initials,
+  required final String name,
+}) extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -15,7 +17,7 @@ class const Header({super.key})
       title: Row(
         children: [
           InitialsAvatar(
-            initials: 'EI',
+            initials: initials,
             size: 44,
             style: AppTextStyles.button,
             ringColor: AppColors.ink,
@@ -36,7 +38,7 @@ class const Header({super.key})
                   ),
                 ),
                 Text(
-                  'Edoardo Fabrizio De Iovanna',
+                  name,
                   maxLines: 1,
                   overflow: .ellipsis,
                   style: AppTextStyles.title,

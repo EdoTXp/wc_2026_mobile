@@ -20,7 +20,7 @@ class const BottomNavBar({
       label: 'TROCAS',
     ),
     (
-      icon: Icons.menu_book_rounded,
+      icon: Icons.menu_rounded,
       label: 'MAIS',
     ),
   ];

@@ -1,11 +1,13 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:wc_2026_mobile/ui/core/theme/app_colors.dart';
-import 'package:wc_2026_mobile/ui/core/theme/app_dimens.dart';
-import 'package:wc_2026_mobile/ui/core/theme/app_text_styles.dart';
+
+import 'app_colors.dart';
+import 'app_dimens.dart';
+import 'app_text_styles.dart';
 
 final class AppTheme._() {
   static const _colorScheme = ColorScheme(
     brightness: .light,
+
     primary: AppColors.red,
     onPrimary: AppColors.white,
     secondary: AppColors.yellow,
@@ -28,20 +30,19 @@ final class AppTheme._() {
     required Color foreground,
     BorderSide? side,
     double height = AppDimens.buttonHeight,
-  }) {
-    return FilledButton.styleFrom(
-      backgroundColor: background,
-      foregroundColor: foreground,
-      disabledBackgroundColor: AppColors.border,
-      disabledForegroundColor: AppColors.grayText,
-      textStyle: AppTextStyles.button,
-      minimumSize: Size(64, height),
-      padding: .symmetric(horizontal: 24),
-      shape: StadiumBorder(),
-      side: side,
-      elevation: 0,
-    );
-  }
+  }) => FilledButton.styleFrom(
+    backgroundColor: background,
+    foregroundColor: foreground,
+    disabledBackgroundColor: AppColors.border,
+    disabledForegroundColor: AppColors.grayText,
+    textStyle: AppTextStyles.button,
+    minimumSize: Size(64, height),
+    padding: const EdgeInsets.symmetric(horizontal: 24),
+
+    shape: const StadiumBorder(),
+    side: side,
+    elevation: 0,
+  );
 
   static final primaryButton = _buttonStyle(
     background: AppColors.yellow,
@@ -61,73 +62,51 @@ final class AppTheme._() {
   static final secondaryButton = _buttonStyle(
     background: AppColors.white,
     foreground: AppColors.ink,
-    side: const BorderSide(
-      color: AppColors.borderStrong,
-      width: 1.5,
-    ),
+    side: const BorderSide(color: AppColors.borderStrong, width: 1.5),
   );
 
   static final dangerOutlineButton = _buttonStyle(
     background: AppColors.white,
     foreground: AppColors.red,
-    side: BorderSide(
-      color: AppColors.red.withValues(alpha: .45),
-      width: 1.5,
-    ),
+    side: BorderSide(color: AppColors.red.withValues(alpha: .45), width: 1.5),
   );
 
   static final ghostButton = _buttonStyle(
     background: AppColors.white.withValues(alpha: .15),
     foreground: AppColors.white,
-    side: BorderSide(
-      color: AppColors.white.withValues(alpha: .4),
-      width: 1.5,
-    ),
+    side: BorderSide(color: AppColors.white.withValues(alpha: .4), width: 1.5),
     height: 44,
   );
 
   static final dangerGhostButton = _buttonStyle(
     background: AppColors.red.withValues(alpha: .2),
     foreground: AppColors.white,
-    side: BorderSide(
-      color: AppColors.red.withValues(alpha: .6),
-      width: 1.5,
-    ),
+    side: BorderSide(color: AppColors.red.withValues(alpha: .6), width: 1.5),
     height: 44,
   );
 
-  static OutlineInputBorder inputBorder(
-    Color color,
-    double widgth,
-  ) {
-    return OutlineInputBorder(
-      borderRadius: AppDimens.borderRadiusSm,
-      borderSide: BorderSide(
-        color: color,
-        width: widgth,
-      ),
-    );
-  }
+  static OutlineInputBorder inputBorder(Color color, double width) =>
+      OutlineInputBorder(
+        borderRadius: AppDimens.borderRadiusSm,
+        borderSide: BorderSide(color: color, width: width),
+      );
+
+  static const _searchFill = Color(0xFFF5F5F0);
 
   static const _searchBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(
-      Radius.circular(12),
-    ),
-    borderSide: .none,
+    borderRadius: BorderRadius.all(Radius.circular(12)),
+    borderSide: BorderSide.none,
   );
 
   static InputDecoration get searchInput => InputDecoration(
-    fillColor: Color(0xFFF5F5F0),
-    hintText: 'Buscar...',
+    fillColor: _searchFill,
+    hintText: 'Buscar…',
     hintStyle: AppTextStyles.body.copyWith(
       fontSize: 12,
-      color: AppColors.gray,
-    ),
-    prefixIcon: const Icon(
-      Icons.search,
-      size: 18,
       color: AppColors.grayText,
     ),
+    prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.grayText),
+
     border: _searchBorder,
     enabledBorder: _searchBorder,
     focusedBorder: _searchBorder,
@@ -137,19 +116,25 @@ final class AppTheme._() {
     colorScheme: _colorScheme,
     scaffoldBackgroundColor: AppColors.cream,
     textTheme: AppTextStyles.textTheme,
-    filledButtonTheme: FilledButtonThemeData(
-      style: primaryButton,
-    ),
-    inputDecorationTheme: InputDecorationTheme(
+
+    filledButtonTheme: FilledButtonThemeData(style: primaryButton),
+    inputDecorationTheme: InputDecorationThemeData(
       filled: true,
       fillColor: AppColors.white,
-      contentPadding: .symmetric(
-        horizontal: 18,
+
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 16,
         vertical: 13.5,
+      ),
+      hintStyle: AppTextStyles.body.copyWith(color: AppColors.grayText),
+      errorStyle: AppTextStyles.body.copyWith(
+        fontSize: 10,
+        color: AppColors.red,
       ),
       border: inputBorder(AppColors.border, 1.5),
       enabledBorder: inputBorder(AppColors.border, 1.5),
       disabledBorder: inputBorder(AppColors.border, 1.5),
+
       focusedBorder: inputBorder(AppColors.green, 2),
       errorBorder: inputBorder(AppColors.red, 2),
       focusedErrorBorder: inputBorder(AppColors.red, 2),
@@ -162,22 +147,14 @@ final class AppTheme._() {
             : Colors.transparent,
       ),
       checkColor: const WidgetStatePropertyAll(AppColors.white),
-      side: const BorderSide(
-        color: AppColors.borderStrong,
-        width: 1.5,
-      ),
+      side: const BorderSide(color: AppColors.borderStrong, width: 1.5),
 
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(4)),
       ),
 
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity: const VisualDensity(
-        horizontal: -4,
-        vertical: -4,
-      ),
+      visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
     ),
 
     progressIndicatorTheme: const ProgressIndicatorThemeData(
@@ -190,9 +167,7 @@ final class AppTheme._() {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: AppDimens.borderRadiusMd,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: AppDimens.borderRadiusMd),
     ),
 
     navigationBarTheme: NavigationBarThemeData(
