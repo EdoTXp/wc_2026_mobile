@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 
-class const StickersDesaturate({
+class const StickerDesaturate({
   super.key,
-  required final bool activate,
+  required final bool active,
   required final Widget child,
 }) extends StatelessWidget {
   final _grayScale = const ColorFilter.matrix([
@@ -30,7 +30,7 @@ class const StickersDesaturate({
   @override
   Widget build(BuildContext context) {
     return ColorFiltered(
-      colorFilter: activate ? _grayScale : _identity,
+      colorFilter: active ? _grayScale : _identity,
       child: child,
     );
   }

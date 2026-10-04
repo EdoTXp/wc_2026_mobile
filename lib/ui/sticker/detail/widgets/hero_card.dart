@@ -2,7 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:wc_2026_mobile/ui/core/shared/app_assets.dart';
 import 'package:wc_2026_mobile/ui/core/shared/team_disc.dart';
 import 'package:wc_2026_mobile/ui/core/theme/theme.dart';
-import 'package:wc_2026_mobile/ui/sticker/widgets/stickers_desaturate.dart';
+import 'package:wc_2026_mobile/ui/sticker/widgets/sticker_desaturate.dart';
 
 class const HeroCard({
   super.key,
@@ -73,8 +73,8 @@ class const _Header({
         padding: const .only(left: 18, right: 14),
         child: Row(
           children: [
-            StickersDesaturate(
-              activate: !collected,
+            StickerDesaturate(
+              active: !collected,
               child: TeamDisc(
                 color: teamColor,
                 flagCode: country,
