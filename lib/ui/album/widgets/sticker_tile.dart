@@ -104,6 +104,16 @@ class const StickerTile({
               ),
             ),
           ),
+
+          if (onTap case final ontTap?)
+            Positioned(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: ontTap,
+                ),
+              ),
+            ),
         ],
       ),
     );

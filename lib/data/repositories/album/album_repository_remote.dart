@@ -6,6 +6,7 @@ import 'package:wc_2026_mobile/data/services/api/mappers/album_api_model_mapper.
 import 'package:wc_2026_mobile/data/services/api/mappers/album_summary_api_model_mapper.dart';
 import 'package:wc_2026_mobile/data/services/api/mappers/dio_exceptions_mapper.dart';
 import 'package:wc_2026_mobile/data/services/api/mappers/recent_sticker_api_model_mapper.dart';
+import 'package:wc_2026_mobile/data/services/api/model/album/sticker_quantity_request.dart';
 import 'package:wc_2026_mobile/domain/models/album/album.dart';
 import 'package:wc_2026_mobile/domain/models/album/album_summary.dart';
 import 'package:wc_2026_mobile/domain/models/album/recent_sticker.dart';
@@ -47,6 +48,49 @@ class AlbumRepositoryRemote({
       );
 
       return Result.ok(album.toDomain());
+    } on DioException catch (e, st) {
+      return Result.error(e.toAppException(st));
+    }
+  }
+
+  @override
+  Future<Result<void>> registerSticker({
+    required String code,
+    required int quantity,
+  }) async {
+    try {
+      await _albumApi.registerSticker(
+        StickerQuantityRequest(code: code, quantity: quantity),
+      );
+
+      return Result.done;
+    } on DioException catch (e, st) {
+      return Result.error(e.toAppException(st));
+    }
+  }
+
+  @override
+  Future<Result<void>> updateStickerQuantity({
+    required String code,
+    required int quantity,
+  }) async {
+    try {
+      await _albumApi.updateStickerQuantity(
+        StickerQuantityRequest(code: code, quantity: quantity),
+      );
+
+      return Result.done;
+    } on DioException catch (e, st) {
+      return Result.error(e.toAppException(st));
+    }
+  }
+
+  @override
+  Future<Result<void>> removeSticker(String code) async {
+    try {
+      await _albumApi.removeSticker(code);
+
+      return Result.done;
     } on DioException catch (e, st) {
       return Result.error(e.toAppException(st));
     }

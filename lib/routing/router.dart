@@ -13,6 +13,8 @@ import 'package:wc_2026_mobile/ui/home/home_screen.dart';
 import 'package:wc_2026_mobile/ui/main/main_screen.dart';
 import 'package:wc_2026_mobile/ui/more/more_screen.dart';
 import 'package:wc_2026_mobile/ui/splash/splash_screen.dart';
+import 'package:wc_2026_mobile/ui/sticker/detail/detail_bindings.dart';
+import 'package:wc_2026_mobile/ui/sticker/detail/detail_screen.dart';
 import 'package:wc_2026_mobile/ui/trades/trades_screen.dart';
 import 'package:wc_2026_mobile/ui/welcome/welcome_screen.dart';
 
@@ -60,6 +62,21 @@ GoRouter router(AuthSessionNotifier session) => GoRouter(
           viewModel: context.read(),
         ),
       ),
+    ),
+
+    GoRoute(
+      path: Routes.stickerPath,
+      builder: (context, state) {
+        final sticker = state.extra as DetailArgs;
+
+        return DetailBindings(
+          sticker: sticker,
+          screenBuilder: (context) => DetailScreen(
+            sticker: sticker,
+            viewModel: context.read(),
+          ),
+        );
+      },
     ),
 
     StatefulShellRoute.indexedStack(
