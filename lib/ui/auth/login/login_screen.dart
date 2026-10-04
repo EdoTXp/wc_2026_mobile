@@ -70,78 +70,80 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Header(),
-          SafeArea(
-            child: Column(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: .stretch,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Emblem(),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    Text(
-                      'FIFA WORLD CUP 26™',
-                      style: AppTextStyles.overline,
-                      textAlign: .center,
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    Padding(
-                      padding: .symmetric(
-                        horizontal: AppDimens.paddingHorizontal,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Header(),
+            SafeArea(
+              child: Column(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: .stretch,
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                      child: ListenableBuilder(
-                        listenable: Listenable.merge([
-                          _email,
-                          _password,
-                        ]),
-                        builder: (context, _) {
-                          final emailText = _email.text.trim();
-                          final passwordText = _password.text.trim();
-
-                          final isFieldsNotEmpty =
-                              emailText.isNotEmpty && passwordText.isNotEmpty;
-
-                          return LoginForm(
-                            emailController: _email,
-                            passwordController: _password,
-                            onSubmit: isFieldsNotEmpty
-                                ? () {
-                                    final arguments = (
-                                      emailText,
-                                      passwordText,
-                                    );
-
-                                    widget.viewModel.login.execute(arguments);
-                                  }
-                                : null,
-                          );
-                        },
+                      Emblem(),
+                      const SizedBox(
+                        height: 26,
                       ),
-                    ),
-                  ],
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.ink,
-                    textStyle: AppTextStyles.bodyBold,
+                      Text(
+                        'FIFA WORLD CUP 26™',
+                        style: AppTextStyles.overline,
+                        textAlign: .center,
+                      ),
+                      const SizedBox(
+                        height: 36,
+                      ),
+                      Padding(
+                        padding: .symmetric(
+                          horizontal: AppDimens.paddingHorizontal,
+                        ),
+                        child: ListenableBuilder(
+                          listenable: Listenable.merge([
+                            _email,
+                            _password,
+                          ]),
+                          builder: (context, _) {
+                            final emailText = _email.text.trim();
+                            final passwordText = _password.text.trim();
+
+                            final isFieldsNotEmpty =
+                                emailText.isNotEmpty && passwordText.isNotEmpty;
+
+                            return LoginForm(
+                              emailController: _email,
+                              passwordController: _password,
+                              onSubmit: isFieldsNotEmpty
+                                  ? () {
+                                      final arguments = (
+                                        emailText,
+                                        passwordText,
+                                      );
+
+                                      widget.viewModel.login.execute(arguments);
+                                    }
+                                  : null,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () => context.push(Routes.authRegister),
-                  child: Text('Não tem conta? Criar conta →'),
-                ),
-              ],
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.ink,
+                      textStyle: AppTextStyles.bodyBold,
+                    ),
+                    onPressed: () => context.push(Routes.authRegister),
+                    child: Text('Não tem conta? Criar conta →'),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
